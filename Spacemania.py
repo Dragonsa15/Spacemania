@@ -381,12 +381,13 @@ def gameloop():
             scorefile.write(str(score))
             scorefile.close()
          else:
-            scorefile.close()
+            scorefile.close()   
          player.kill()
          run = False
+ 
       if run == False :
          if pygame.time.get_ticks()-dead>1000 :
-            running = False
+            running = False      
       for bullet in bullets :
          hit = pygame.sprite.spritecollide(bullet,enemies,True)
          if hit : 
@@ -395,7 +396,6 @@ def gameloop():
             all_sprites.add(explo)
             score += 1
             print("You killed an enemy! Your current score is", score)
-            Button(WIDTH-200,2*HEIGHT/3,"QUIT",RED,quit,100,75)
       
       #Check if all the dots have been consumed
       if dots_left == 0 :
@@ -418,6 +418,13 @@ def gameloop():
       all_sprites.draw(screen) #Draw all the sprites at their positions
       
       #Display the text
+      draw_text(screen,"INSTRUCTIONS",13,WIDTH-50,HEIGHT-550)
+      draw_text(screen,"Up Key: UP",12,WIDTH-67,HEIGHT-520)
+      draw_text(screen,"Down Key: Down",12,WIDTH-53,HEIGHT-500)
+      draw_text(screen,"Left Key: Left",13,WIDTH-60,HEIGHT-480)
+      draw_text(screen,"Right Key: Right",13,WIDTH-53,HEIGHT-460)
+      draw_text(screen,"Space: Shoot",13,WIDTH-60,HEIGHT-440)
+      draw_text(screen,"p: Pause",13,WIDTH-73,HEIGHT-420)
       draw_text(screen,"Dots left : " + str(dots_left),28,WIDTH/6,HEIGHT-43)
       draw_text(screen,"Bullets left : " + str(player.bullets_left),28,WIDTH/2,HEIGHT-43)
       draw_text(screen,"Time for ",18,WIDTH*5/6,HEIGHT-43)
@@ -461,8 +468,8 @@ while intro:
    
    screen.fill(BLUE)
    screen.blit(background,background_rect)	
-   Button(100,2*HEIGHT/3,"PLAY",GREEN,gameloop,100,75)
-   Button(WIDTH-200,2*HEIGHT/3,"QUIT",RED,quit,100,75)
+   Button(50,2*HEIGHT/3,"PLAY",GREEN,gameloop,100,75)
+   Button(WIDTH-250,2*HEIGHT/3,"QUIT",RED,quit,100,75)
    draw_text(screen,"SpaceMania",75,WIDTH/2,HEIGHT/3-75)
    pygame.display.flip()
    clock.tick(FPS)

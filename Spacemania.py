@@ -17,6 +17,9 @@ last_bullet_time = pygame.time.get_ticks()
 next_wave_time = pygame.time.get_ticks() # To store when the next wave of enemies is scheduled
 allow_next_wave = False # Flag variable for next wave 
 gameDisplay = pygame.display.set_mode((800,600))
+crash_sound = pygame.mixer.Sound("crash.wav")
+bomb_sound = pygame.mixer.Sound("Bomb.wav")
+shoot_sound = pygame.mixer.Sound("Laser-shot.wav")
 
 #Set up the folder for all the assets
 asset_folder = os.path.dirname(__file__);
@@ -298,6 +301,20 @@ def paused(pause):
         pygame.display.update()
         clock.tick(15)  
 
+def crash():
+    pygame.mixer.Channel(1).play(pygame.mixer.Sound(crash_sound))
+    pygame.mixer.Sound.play(crash_sound)
+    pygame.mixer.music.stop()
+
+def shoot():
+    pygame.mixer.Channel(2).play(pygame.mixer.Sound(shoot_sound))
+    pygame.mixer.Sound.play(shoot_sound)
+    pygame.mixer.music.stop()
+
+def Explode():
+    pygame.mixer.Channel(3).play(pygame.mixer.Sound(bomb_sound))
+    pygame.mixer.Sound.play(bomb_sound)
+    pygame.mixer.music.stop()
 
 #Load all game graphics
 background = pygame.image.load(os.path.join(asset_folder,"map-with-pane.png"))
@@ -337,6 +354,9 @@ def gameloop():
    global direction
    global run
    global last_bullet_time
+   pygame.mixer.music.load('Dance-Pac-Man-Theme-NightSky-Remix_vHjBYGnBcfI.wav')
+   pygame.mixer.Channel(0).play(pygame.mixer.Sound('Dance-Pac-Man-Theme-NightSky-Remix_vHjBYGnBcfI.wav'))
+   pygame.mixer.music.play(-1)
    while running:
       clock.tick(FPS)
       for event in pygame.event.get():
@@ -358,6 +378,7 @@ def gameloop():
                   bullet = Bullets(player.rect.centerx,player.rect.centery,4*player.velocity[0],4*player.velocity[1])
                   bullets.add(bullet)
                   all_sprites.add(bullet)
+                  shoot()
             if event.key == pygame.K_p :      #press p to pause the game
                pause = True
                paused(pause)		
@@ -371,6 +392,7 @@ def gameloop():
       hits = pygame.sprite.spritecollide(player,enemies,False)
       if hits and run :
          print("You got hit by an enemy ")
+         crash()
          dead = pygame.time.get_ticks()
          explo = Explosion(player.rect.center,60)
          all_sprites.add(explo)
@@ -395,6 +417,7 @@ def gameloop():
             explo = Explosion(bullet.rect.center,32)
             all_sprites.add(explo)
             score += 1
+            Explode()
             print("You killed an enemy! Your current score is", score)
       
       #Check if all the dots have been consumed

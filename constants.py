@@ -6,6 +6,6 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 # Set basic variables
-HEIGHT = 577
-WIDTH = 570
+HEIGHT = 600
+WIDTH = 600
 FPS = 100
